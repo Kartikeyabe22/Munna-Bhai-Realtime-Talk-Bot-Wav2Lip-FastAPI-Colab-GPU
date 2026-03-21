@@ -1,0 +1,25 @@
+# Core LangChain
+langchain==0.3.14
+langchain-core==0.3.29
+langchain-community==0.3.14
+langchain-text-splitters==0.3.4
+
+# Vector Store
+langchain-chroma==0.1.4
+chromadb==0.5.23
+
+# Model integrations
+langchain-groq==0.2.1
+langchain-huggingface==0.1.2
+sentence-transformers==3.2.1
+
+# Document loaders
+pypdf==4.3.1
+
+# App
+streamlit==1.41.1
+
+# Utilities
+python-dotenv==1.0.1
+gTTS
+pydub
