@@ -18,14 +18,14 @@ load_dotenv()
 
 # Initialize client
 client = ElevenLabs(
-    api_key="sk_fbce4e1193f83e78dd6ea965a4c967bee708757cfd3dcaf1",
+    api_key="sk_57c63ab77ebd88aa0b45b9cc7111aa30e196dde4ee12e9ac",
 )
 
 def text_to_speech(text, filename="output.mp3"):
 
     audio = client.text_to_speech.convert(
         text=text,
-        voice_id="olgAEEIlAMvn96kczoCa",  # ✅ your voice ID
+        voice_id="oGIr8duUtinux4nPetuO",  # ✅ your voice ID
         model_id="eleven_v3",
         output_format="mp3_44100_128",
     )
