@@ -18,7 +18,7 @@ load_dotenv()
 
 # Initialize client
 client = ElevenLabs(
-    api_key="sk_57c63ab77ebd88aa0b45b9cc7111aa30e196dde4ee12e9ac",
+    api_key=os.getenv("ELEVENLABS_API_KEY"),
 )
 
 def text_to_speech(text, filename="output.mp3"):
