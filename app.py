@@ -50,11 +50,26 @@ def generate_video(audio_path):
 
     return output_path
 
-# ------------------- EMBEDDINGS -------------------
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
 # ------------------- UI -------------------
 st.set_page_config(page_title="Munna Bhai AI", layout="centered")
+
+# ------------------- EMBEDDINGS -------------------
+@st.cache_resource
+def load_embeddings():
+    return HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
+embeddings = load_embeddings()
+
+
+
+st.markdown("""
+<style>
+[data-testid="stSpinner"] {display:none !important;}
+[data-testid="stStatusWidget"] {display:none !important;}
+[data-testid="stAppViewContainer"]::before {content:none !important;}
+</style>
+""", unsafe_allow_html=True)
+
 st.title("🧠 Munna Bhai AI")
 st.write("Talk to Munna Bhai 🎬")
 
@@ -81,14 +96,22 @@ def load_dataset():
 
 dataset = load_dataset()
 
+
 # ------------------- EMBEDDINGS -------------------
+
 @st.cache_resource
-def compute_embeddings(dataset):
+def load_vectors():
+    if os.path.exists("dataset_vectors.npy"):
+        return np.load("dataset_vectors.npy")
+    
+    # fallback (only first time)
     texts = [f"{item['input']} {item['output']}" for item in dataset]
     vectors = embeddings.embed_documents(texts)
+    np.save("dataset_vectors.npy", vectors)
     return np.array(vectors)
 
-dataset_vectors = compute_embeddings(dataset)
+dataset_vectors = load_vectors()
+
 
 # ------------------- SIMILARITY SEARCH -------------------
 def get_similar_examples(user_input, top_k=3):
@@ -116,23 +139,37 @@ llm = ChatGroq(
 munna_prompt = """
 You are Munna Bhai from Mumbai.
 
-You are NOT an AI.
-You are a street-smart tapori.
+You are NOT an AI. You are a street-smart tapori bhai.
 
-IMPORTANT:
-- ONLY Bambaiya Hindi + Hinglish
+━━━━━━━━━━━ STYLE RULES ━━━━━━━━━━━
+- Speak ONLY in Bambaiya Hindi + Hinglish
 - Use words like: apun, bhai, mamu, scene, jhakaas
-- NEVER formal Hindi
-- NEVER sound like teacher
-- NEVER use emojis in your response
+- Talk like Mumbai street guy, not educated teacher
 
-STYLE:
-- Funny + swag
-- Emotional but street smart
-- 5-6 short punchy lines
+━━━━━━━━━━━ STRICT RULES ━━━━━━━━━━━
+- NEVER use formal Hindi
+- NEVER speak like a chatbot or assistant
+- NEVER explain like a teacher
+- NEVER use emojis
+- NEVER write long paragraphs
 
-Use this context if helpful:
+━━━━━━━━━━━ RESPONSE STYLE ━━━━━━━━━━━
+- Max 5–6 lines
+- Short punchy sentences
+- Slight humor + attitude
+- Street-smart advice
+- Feel like real Munna Bhai talking
+
+━━━━━━━━━━━ CONTEXT USAGE ━━━━━━━━━━━
+Use the below context if useful:
 {context}
+
+━━━━━━━━━━━ SELF-CHECK (IMPORTANT) ━━━━━━━━━━━
+Before answering, check:
+- Does this sound like Munna Bhai?
+- If not, rewrite it in tapori style.
+
+Now respond to the user.
 """
 
 prompt = ChatPromptTemplate.from_messages([
@@ -173,9 +210,14 @@ if user_input:
     answer = response.content
 
     # 🎬 Generate video
-    with st.spinner("Munna bhai soch raha hai... 🎬"):
-        audio_path = text_to_speech(answer)
-        video_path = generate_video(audio_path)
+    placeholder = st.empty()
+    placeholder.markdown("🎬 Munna bhai video bana raha hai...")
+
+    audio_path = text_to_speech(answer)
+    video_path = generate_video(audio_path)
+
+    placeholder.empty()
+
 
     # ✅ Store chat
     st.session_state.chat.append({
