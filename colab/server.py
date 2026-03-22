@@ -79,12 +79,19 @@ if __name__ == "__main__":
 
     thread = threading.Thread(target=run_api)
     thread.start()
+    
+#Cloudflare tunnel does not provide a stable url so we are using instatunnel which is stable url
 
-    # 🔥 Install cloudflared (safe)
-    os.system("wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared")
-    os.system("chmod +x cloudflared")
 
-    print("🔥 Starting Cloudflare tunnel...")
+    # # 🔥 Install cloudflared (safe)
+    # os.system("wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared")
+    # os.system("chmod +x cloudflared")
 
-    # 🔥 Start tunnel
-    os.system("./cloudflared tunnel --url http://localhost:8000")
+    # print("🔥 Starting Cloudflare tunnel...")
+
+    # # 🔥 Start tunnel
+    # os.system("./cloudflared tunnel --url http://localhost:8000")
+    
+    
+
+    os.system("instatunnel tunnel 8000 --subdomain munna")

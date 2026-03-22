@@ -18,17 +18,10 @@ load_dotenv()
 
 # Initialize client
 client = ElevenLabs(
-    api_key="",
+    api_key="sk_fbce4e1193f83e78dd6ea965a4c967bee708757cfd3dcaf1",
 )
 
 def text_to_speech(text, filename="output.mp3"):
-    
-    # 🔥 Munna Bhai style delivery
-    # styled_text = f"""
-    # (deep voice, slightly rough, Mumbai tapori style, relaxed swagger, slow delivery)
-
-    # {text}
-    # """
 
     audio = client.text_to_speech.convert(
         text=text,
