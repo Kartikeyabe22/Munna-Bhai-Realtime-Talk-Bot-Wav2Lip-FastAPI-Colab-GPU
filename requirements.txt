@@ -5,9 +5,10 @@ langchain-community==0.3.14
 langchain-text-splitters==0.3.4
 
 # Vector Store
-langchain-chroma==0.1.4
+
 #for now we using a manual local vector store as dataset is small
 #chromadb==0.5.23
+#langchain-chroma==0.1.4
 
 # Model integrations
 langchain-groq==0.2.1
