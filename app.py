@@ -20,8 +20,15 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 # ------------------- UI -------------------
-st.title("🧠 Munna Bhai AI")
-st.write("Talk to Munna Bhai 🎬")
+st.markdown(
+    "<h1 style='text-align: center;'>🧠 Munna Bhai AI</h1>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<p style='text-align: center;'>Talk to Munna Bhai 🎬</p>",
+    unsafe_allow_html=True
+)
 
 session_id = st.text_input("Session ID", value="default")
 
@@ -134,15 +141,20 @@ user_input = st.text_input("You:")
 if user_input:
     history = get_session_history(session_id)
 
+    # 🧠 Generate response first (fast)
     answer = generate_response(user_input, history)
 
-    st.write("🧑 Munna Bhai:", answer)
+    # ⏳ SHOW LOADING WHILE VIDEO IS BEING CREATED
+    with st.spinner("Munna bhai soch raha hai... 🎬"):
 
-    # 🔥 TEXT → AUDIO
-    audio_path = text_to_speech(answer)
+        # 🔊 TEXT → AUDIO
+        audio_path = text_to_speech(answer)
 
-    # 🔥 AUDIO → VIDEO
-    video_path = generate_video(audio_path)
+        # 🎥 AUDIO → VIDEO (THIS TAKES TIME)
+        video_path = generate_video(audio_path)
 
-    # 🎥 SHOW VIDEO
+    # 🎥 FIRST SHOW VIDEO
     st.video(video_path)
+
+    # 🧑 THEN SHOW TEXT (AFTER VIDEO LOAD)
+    st.write("🧑 Munna Bhai:", answer)
