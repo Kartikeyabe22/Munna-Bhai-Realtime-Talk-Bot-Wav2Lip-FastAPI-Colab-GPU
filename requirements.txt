@@ -23,3 +23,6 @@ streamlit==1.41.1
 python-dotenv==1.0.1
 gTTS
 pydub
+
+#eleven labs
+elevenlabs

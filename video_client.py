@@ -1,6 +1,6 @@
 import requests
 
-API_URL = "http://127.0.0.1:8000/generate"
+API_URL = "https://reef-russell-lead-atlanta.trycloudflare.com/generate"
 
 def generate_video(audio_path, output_path="result.mp4"):
     with open(audio_path, "rb") as f:
