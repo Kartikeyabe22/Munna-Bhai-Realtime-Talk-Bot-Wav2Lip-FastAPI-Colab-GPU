@@ -1,0 +1,1 @@
+So first need to run the Wav2Lip.ipynb file in colab with gpu it will create a Wav2Lip folder and in that place server.py and then when we run !python server.py we will get a link to update it in video_client.py file and then run vs code app.py .

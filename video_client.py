@@ -1,6 +1,6 @@
 import requests
 
-API_URL = "https://gcc-specialist-extra-assignments.trycloudflare.com/generate"
+API_URL = "http://127.0.0.1:8000/generate"
 
 def generate_video(audio_path, output_path="result.mp4"):
     with open(audio_path, "rb") as f:
